@@ -21,6 +21,41 @@ function randomPosition() {
     return Math.floor(Math.random() * (canvas.width / tileSize)) * tileSize;
 }
 
+// Sjekker om mat er på slangens kropp
+function isFoodOnSnake(foodPosition) {
+    return snake.some(segment => segment.x === foodPosition.x && segment.y === foodPosition.y);
+}
+
+// Generer mat
+function generateFood() {
+    let newFoodPosition;
+    do {
+        newFoodPosition = { x: randomPosition(), y: randomPosition() };
+    } while (isFoodOnSnake(newFoodPosition));
+    return newFoodPosition;
+}
+
+// Oppdaterer mat- og slangeposisjon
+function update() {
+    const head = { ...snake[0] };
+    head.x += direction.x * tileSize;
+    head.y += direction.y * tileSize;
+    snake.unshift(head);
+
+    // Sjekker om slangen spiser mat
+    if (head.x === food.x && head.y === food.y) {
+        score += 1;
+        currentScore.textContent = score;
+        if (score > highScore) {
+            highScore = score;
+            highScoreDisplay.textContent = highScore;
+        }
+        food = generateFood();
+    } else {
+        snake.pop();
+    }
+}
+
 // Tegne rektangel
 function drawRect(color, x, y, size) {
     ctx.fillStyle = color;
@@ -54,33 +89,12 @@ function isGameOver() {
 
 // Nullstiller spillet
 function resetGame() {
-    alert('Game Over!');
+    alert('Game over!');
     snake = [{ x: 100, y: 100 }];
     direction = { x: 0, y: 0 };
     score = 0;
     currentScore.textContent = score;
     food = { x: randomPosition(), y: randomPosition() };
-}
-
-// Oppdaterer mat- og slangeposisjon
-function update() {
-    const head = { ...snake[0] };
-    head.x += direction.x * tileSize;
-    head.y += direction.y * tileSize;
-    snake.unshift(head);
-
-    // Sjekker om slangen spiser mat
-    if (head.x === food.x && head.y === food.y) {
-        score += 1;
-        currentScore.textContent = score;
-        if (score > highScore) {
-            highScore = score;
-            highScoreDisplay.textContent = highScore;
-        }
-        food = { x: randomPosition(), y: randomPosition() };
-    } else {
-        snake.pop();
-    }
 }
 
 // Spillelementene
