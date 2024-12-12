@@ -40,6 +40,13 @@ function update() {
     const head = { ...snake[0] };
     head.x += direction.x * tileSize;
     head.y += direction.y * tileSize;
+
+    // Sjekker om hodet treffer veggen
+    if (head.x < 0 || head.y < 0 || head.x >= canvas.width || head.y >= canvas.height || snakeCollision(head)) {
+        resetGame();
+        return;
+    }
+
     snake.unshift(head);
 
     // Sjekker om slangen spiser mat
@@ -56,10 +63,9 @@ function update() {
     }
 }
 
-// Tegne rektangel
-function drawRect(color, x, y, size) {
-    ctx.fillStyle = color;
-    ctx.fillRect(x, y, size, size);
+// Sjekker om slangen kolliderer
+function snakeCollision(position) {
+    return snake.some((segment, index) => index !== 0 && segment.x === position.x && segment.y === position.y);
 }
 
 // Spill loop
@@ -95,6 +101,12 @@ function resetGame() {
     score = 0;
     currentScore.textContent = score;
     food = { x: randomPosition(), y: randomPosition() };
+}
+
+// Tegne rektangel  
+function drawRect(color, x, y, size) {
+    ctx.fillStyle = color;
+    ctx.fillRect(x, y, size, size);
 }
 
 // Spillelementene
