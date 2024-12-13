@@ -93,15 +93,35 @@ function isGameOver() {
     return false;
 }
 
+async function fetchHighScore() {
+    const response = await fetch('/get_highscore');
+    const data = await response.json();
+    highScore = data.high_score;
+    highScoreDisplay.textContent = highScore;
+}
+fetchHighScore();
+
+async function saveHighScore() {
+    if (score > highScore) {
+        await fetch('/update_highscore', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ player_name: 'Player1', score: score })
+        });
+    }
+}
+
 // Nullstiller spillet
 function resetGame() {
     alert('Game over!');
+    saveHighScore();  // Lagre ny high score
     snake = [{ x: 100, y: 100 }];
     direction = { x: 0, y: 0 };
     score = 0;
     currentScore.textContent = score;
-    food = { x: randomPosition(), y: randomPosition() };
+    food = { x: 200, y: 200 };
 }
+
 
 // Tegne rektangel  
 function drawRect(color, x, y, size) {
