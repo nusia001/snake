@@ -3,17 +3,14 @@ import mysql.connector
 
 app = Flask(__name__)
 
-# Konfigurer MariaDB-forbindelse
-db_config = {
-    'host': '10.2.2.131',
-    'user': 'root',
-    'password': '',
-    'database': 'SnakeGame'
-}
-
 @app.route('/get_highscore', methods=['GET'])
 def get_highscore():
-    conn = mysql.connector.connect(**db_config)
+    conn = mysql.connector.connect(
+        host = "10.2.2.32",
+        user = "root",
+        password = "",
+        database = "SnakeGame"
+    )
     cursor = conn.cursor(dictionary=True)
     cursor.execute("SELECT MAX(score) AS high_score FROM HighScore")
     result = cursor.fetchone()
@@ -26,7 +23,12 @@ def update_highscore():
     new_score = data.get('score', 0)
     player_name = data.get('player_name', 'Unknown')
 
-    conn = mysql.connector.connect(**db_config)
+    conn = mysql.connector.connect(
+         host = "10.2.2.32",
+        user = "root",
+        password = "",
+        database = "SnakeGame"
+    )
     cursor = conn.cursor(dictionary=True)
 
     # Finn nåværende høyeste score

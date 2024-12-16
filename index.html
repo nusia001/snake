@@ -1,29 +1,38 @@
 <!-- Meta -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snake Game</title>
+    <title>Snake</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="images/logo.png" type="image/png">
 </head>
+
 <body>
     <!-- Navbar -->
     <nav>
         <div class="navbar">
-            <h1>Snake Game</h1>
+            <img src="images/logo.png" alt="Snake Logo">
+            <h1>Snake</h1>
         </div>
     </nav>
     <main>
+        <div class="bar">
+            <!-- Score -->
+            <div class="score">
+                <p>Score: <span id="currentScore">0</span></p>
+                <p>Highscore: <span id="highScore">0</span></p>
+            </div>
+
+            <button id="muteButton">🔊</button>
+        </div>
         <!-- Spillet -->
         <canvas id="gameCanvas"></canvas>
-        <!-- Score -->
-        <div class="score">
-            <p>Score: <span id="currentScore">0</span></p>
-            <p>Highscore: <span id="highScore">0</span></p>
-        </div>
     </main>
     <!-- Javascript -->
     <script src="script.js"></script>
 </body>
+
 </html>

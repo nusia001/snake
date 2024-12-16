@@ -1,27 +1,43 @@
-/* Custom font */
-@import url('https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap');
+/* Font */
+@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap');
 
 /* Body */
 body {
     margin: 0;
-    font-family: "Silkscreen", sans-serif;
-    background-color: #000000;
+    font-family: sans-serif;
+    color: #ffffff;
+    background-color: #222738;
     display: flex;
     flex-direction: column;
     align-items: center;
+    font-family: sans-serif;
     height: 100vh;
 }
 
 /* Navbar */
 nav {
+    display: flex;
+    align-items: center;
     width: 100%;
-    padding: 20px 0;
-    margin-bottom: 15px;
+    padding: 15px 0;
+    margin-bottom: 5px;
     text-align: center;
+    background-color: #212233;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+}
+
+.navbar img {
+    height: 60px;
+    width: 60px;
+    margin-right: 25px;
+    margin-left: 35px;
 }
 
 .navbar h1 {
-    color: #38f000;
     margin: 0;
 }
 
@@ -33,14 +49,26 @@ main {
 
 /* Spillet */
 canvas {
+    border: 3px solid #181825;
+}
+
+.bar {
     display: flex;
-    border: 2px solid #fff;
-    background-color: #333;
+    justify-content: space-between;
+    width: 400px;
+}
+
+.bar button {
+    cursor: pointer;
+    background: none;
+    border: none;
 }
 
 .score {
+    display: flex;
+    align-items: center;
+    font-family: "Pixelify Sans", sans-serif;
     font-size: 14px;
-    margin-top: 10px;
+    gap: 15px;
     text-align: center;
-    color: #38f000;
 }

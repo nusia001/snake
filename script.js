@@ -5,6 +5,7 @@ const ctx = canvas.getContext('2d');
 canvas.width = 400;
 canvas.height = 400;
 
+// Alt annet
 const tileSize = 20;
 let snake = [{ x: 100, y: 100 }];
 let food = { x: 200, y: 200 };
@@ -35,13 +36,36 @@ function generateFood() {
     return newFoodPosition;
 }
 
+// Last inn lyder
+const eatSound = new Audio('audio/eat.mp3');
+const turnSound = new Audio('audio/turn.mp3');
+const crashSound = new Audio('audio/crash.mp3');
+
+// Lydstatus
+let soundEnabled = true;
+
+// Muteknapp
+const muteButton = document.getElementById('muteButton');
+
+// Funksjon for å spille lyd
+function playSound(sound) {
+    if (soundEnabled) {
+        sound.play();
+    }
+}
+
+// Håndterer muteknappen
+muteButton.addEventListener('click', () => {
+    soundEnabled = !soundEnabled;
+    muteButton.textContent = soundEnabled ? '🔊' : '🔇';
+});
+
 // Oppdaterer mat- og slangeposisjon
 function update() {
     const head = { ...snake[0] };
     head.x += direction.x * tileSize;
     head.y += direction.y * tileSize;
 
-    // Sjekker om hodet treffer veggen
     if (head.x < 0 || head.y < 0 || head.x >= canvas.width || head.y >= canvas.height || snakeCollision(head)) {
         resetGame();
         return;
@@ -49,10 +73,10 @@ function update() {
 
     snake.unshift(head);
 
-    // Sjekker om slangen spiser mat
     if (head.x === food.x && head.y === food.y) {
         score += 1;
         currentScore.textContent = score;
+        playSound(eatSound);
         if (score > highScore) {
             highScore = score;
             highScoreDisplay.textContent = highScore;
@@ -93,6 +117,7 @@ function isGameOver() {
     return false;
 }
 
+// Henter highscore
 async function fetchHighScore() {
     const response = await fetch('/get_highscore');
     const data = await response.json();
@@ -101,6 +126,7 @@ async function fetchHighScore() {
 }
 fetchHighScore();
 
+// Lagrer highscore
 async function saveHighScore() {
     if (score > highScore) {
         await fetch('/update_highscore', {
@@ -113,8 +139,9 @@ async function saveHighScore() {
 
 // Nullstiller spillet
 function resetGame() {
+    crashSound.play();
     alert('Game over!');
-    saveHighScore();  // Lagre ny high score
+    saveHighScore();
     snake = [{ x: 100, y: 100 }];
     direction = { x: 0, y: 0 };
     score = 0;
@@ -123,7 +150,7 @@ function resetGame() {
 }
 
 
-// Tegne rektangel  
+// Tegner rektangel  
 function drawRect(color, x, y, size) {
     ctx.fillStyle = color;
     ctx.fillRect(x, y, size, size);
@@ -133,12 +160,20 @@ function drawRect(color, x, y, size) {
 function render() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Draw food
+    // Tegner rutemønster
+    for (let y = 0; y < canvas.height; y += tileSize) {
+        for (let x = 0; x < canvas.width; x += tileSize) {
+            ctx.fillStyle = (x / tileSize + y / tileSize) % 2 === 0 ? '#181825' : '#222738';
+            ctx.fillRect(x, y, tileSize, tileSize);
+        }
+    }
+
+    // Tegner mat
     drawRect('#ff0000', food.x, food.y, tileSize);
 
-    // Draw snake
+    // Tegner slangen
     snake.forEach((segment, index) => {
-        drawRect(index === 0 ? '#00ff00' : '#66ff66', segment.x, segment.y, tileSize);
+        drawRect(index === 0 ? '#ffffff' : '#e4dede', segment.x, segment.y, tileSize);
     });
 }
 
@@ -149,12 +184,22 @@ document.addEventListener('keydown', (e) => {
         ArrowDown: { x: 0, y: 1 },
         ArrowLeft: { x: -1, y: 0 },
         ArrowRight: { x: 1, y: 0 },
+        w: { x: 0, y: -1 },
+        s: { x: 0, y: 1 },
+        a: { x: -1, y: 0 },
+        d: { x: 1, y: 0 },
     };
 
     const newDirection = keyMap[e.key];
     if (newDirection) {
+        // Stopper nettsiden fra å bevege seg
+        e.preventDefault();
+
+        // Sjekk at slangen ikke går motsatt vei
         if (direction.x + newDirection.x === 0 && direction.y + newDirection.y === 0) return;
+
         direction = newDirection;
+        playSound(turnSound);  // Spill snu-lyden
     }
 });
 

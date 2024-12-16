@@ -1,0 +1,13 @@
+--------------------------------------------
+
+Til ubuntu (raspberry pi)
+Navn: numaan
+Passord: Kuben123
+
+--------------------------------------------
+
+Til mariadb (raspberry pi)
+Navn: root
+Passord: *ingenting* (bare tomt)
+
+--------------------------------------------
