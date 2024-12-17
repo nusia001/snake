@@ -24,7 +24,7 @@ def update_highscore():
     player_name = data.get('player_name', 'Unknown')
 
     conn = mysql.connector.connect(
-         host = "10.2.2.32",
+        host = "10.2.2.32",
         user = "root",
         password = "",
         database = "SnakeGame"

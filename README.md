@@ -26,7 +26,7 @@ Før du kan kjøre spillet, må du sørge for at følgende programvare er instal
 
    For å klone prosjektet, bruk git:
    ```bash
-   git clone https://github.com/dittbrukernavn/snake-game.git
+   git clone https://github.com/nusia001/snake.git
    ```
 
 2. **Sett opp MariaDB-databasen**:
