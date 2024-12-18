@@ -45,15 +45,12 @@ Før du kan kjøre spillet, må du sørge for at følgende programvare er instal
 3. **Oppdater databasekonfigurasjonen**:
    I `app.py`-filen, oppdater databasenavn, bruker og passord.
    ```python
-   def get_db_connection():
-       conn = mariadb.connect(
-           user="din_bruker",
-           password="ditt_passord",
-           host="localhost",
-           port=3306,
-           database="ditt_database"
-       )
-       return conn
+   conn = mysql.connector.connect(
+        host = "din_ip_adresse",
+        user = "din_bruker",
+        password = "ditt_passord",
+        database = "ditt_database"
+    )
    ```
 
 ## Hvordan kjøre prosjektet
